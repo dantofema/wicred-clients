@@ -25,6 +25,7 @@
     </head>
 
     <body>
+        <livewire:front::header />
         {{ $slot }}
 
         {{-- Vite JS --}}
