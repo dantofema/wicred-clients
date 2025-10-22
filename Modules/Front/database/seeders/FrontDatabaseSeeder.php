@@ -11,6 +11,8 @@ class FrontDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        // Call module seeders
+        $this->call(PeopleRegistrySeeder::class);
+
     }
 }
