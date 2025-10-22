@@ -1,10 +1,10 @@
 <header class="bg-white dark:bg-gray-900" x-data="{ mobileMenuOpen: false }">
     <nav aria-label="Global" class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div class="flex lg:flex-1">
-            <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Your Company</span>
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="" class="h-8 w-auto dark:hidden" />
-                <img src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="" class="h-8 w-auto not-dark:hidden" />
+            <a href="{{ route('front.index') }}" class="-m-1.5 p-1.5">
+                <span class="sr-only">WiCred</span>
+                <img src="{{ asset('images/logo-mini.png') }}" alt="" class="h-8 w-auto dark:hidden" />
+                <img src="{{ asset('images/logo-mini.png') }}" alt="" class="h-8 w-auto not-dark:hidden" />
             </a>
         </div>
         <div class="flex lg:hidden">
@@ -22,10 +22,7 @@
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Product</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Features</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Marketplace</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Company</a>
+            <a href="{{ route('front.request-loan') }}" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Solicitar préstamo</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <a href="#" class="text-sm/6 font-semibold text-gray-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -85,7 +82,7 @@
             <div class="mt-6 flow-root">
                 <div class="-my-6 divide-y divide-gray-500/10 dark:divide-white/10">
                     <div class="space-y-2 py-6">
-                        <a href="#" @click="mobileMenuOpen = false" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors">Product</a>
+                        <a href="#" @click="mobileMenuOpen = false" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors">Solicitar préstamo</a>
                         <a href="#" @click="mobileMenuOpen = false" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors">Features</a>
                         <a href="#" @click="mobileMenuOpen = false" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors">Marketplace</a>
                         <a href="#" @click="mobileMenuOpen = false" class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition-colors">Company</a>

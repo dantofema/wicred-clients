@@ -5,12 +5,9 @@ namespace Modules\Front\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class FrontIndexController extends Controller
+class IndexController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __invoke()
     {
         return view('front::index');
     }
