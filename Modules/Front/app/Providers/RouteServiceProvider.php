@@ -14,6 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * Register any model bindings or pattern based filters.
      */
+    #[\Override]
     public function boot(): void
     {
         parent::boot();

@@ -22,29 +22,29 @@ services:
     networks:
       - sail
     depends_on:
-      - mysql
+      - mariadb
       - redis
       - mailpit
-  mysql:
-    image: 'mysql:8.0'
+  mariadb:
+    image: 'mariadb:10.5.15'
     ports:
       - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
+      MARIADB_ROOT_PASSWORD: '${DB_PASSWORD:-secret}'
+      MARIADB_DATABASE: '${DB_DATABASE}'
+      MARIADB_USER: '${DB_USERNAME}'
+      MARIADB_PASSWORD: '${DB_PASSWORD:-secret}'
+      # compatibility - some images accept MYSQL_* vars too
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD:-secret}'
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_USER: '${DB_USERNAME}'
       MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
-      - 'sail-mysql:/var/lib/mysql'
+      - 'sail-mariadb:/var/lib/mysql'
     networks:
       - sail
     healthcheck:
-      test:
-        - CMD
-        - mysqladmin
-        - ping
-        - '-h'
-        - 'localhost'
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       retries: 3
       timeout: 5s
   redis:
@@ -56,10 +56,7 @@ services:
     networks:
       - sail
     healthcheck:
-      test:
-        - CMD
-        - redis-cli
-        - ping
+      test: [ "CMD", "redis-cli", "ping" ]
       retries: 3
       timeout: 5s
   mailpit:
@@ -73,7 +70,7 @@ networks:
   sail:
     driver: bridge
 volumes:
-  sail-mysql:
+  sail-mariadb:
     driver: local
   sail-redis:
     driver: local

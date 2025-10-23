@@ -8,13 +8,12 @@ use Modules\Front\PeopleRegistry;
 class InputDni extends Component
 {
     public string $dni = '';
+
     public string $errorMessage = '';
 
     /**
      * Person data loaded from the registry (or null when not found).
      * Stored as an array with keys like dni, name, last_name, cuil.
-     *
-     * @var array|null
      */
     public ?array $person = null;
 
@@ -37,6 +36,13 @@ class InputDni extends Component
      */
     public function search(): void
     {
+
+        if ($this->dni === '') {
+            $this->errorMessage = 'Por favor ingrese un DNI.';
+            $this->person = null;
+
+            return;
+        }
 
         $this->errorMessage = '';
 

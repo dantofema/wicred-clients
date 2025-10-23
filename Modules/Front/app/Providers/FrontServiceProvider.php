@@ -35,6 +35,7 @@ class FrontServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->register(EventServiceProvider::class);
@@ -70,9 +71,9 @@ class FrontServiceProvider extends ServiceProvider
 
             $absolutePath = $file->getPathname();
             // Build fully-qualified class name from PSR-4 mapping
-            $relativePath = Str::after($absolutePath, $baseDir . DIRECTORY_SEPARATOR);
+            $relativePath = Str::after($absolutePath, $baseDir.DIRECTORY_SEPARATOR);
             $classPath = Str::replaceLast('.php', '', $relativePath);
-            $classNamespace = 'Modules\\' . $this->name . '\\Livewire\\' . str_replace(DIRECTORY_SEPARATOR, '\\', $classPath);
+            $classNamespace = 'Modules\\'.$this->name.'\\Livewire\\'.str_replace(DIRECTORY_SEPARATOR, '\\', $classPath);
 
             if (! class_exists($classNamespace)) {
                 continue;
@@ -80,7 +81,7 @@ class FrontServiceProvider extends ServiceProvider
 
             // Build Livewire alias like 'front.admin.users-table'
             $aliasPath = str_replace(DIRECTORY_SEPARATOR, '.', $classPath);
-            $alias = $this->nameLower . '.' . Str::kebab($aliasPath);
+            $alias = $this->nameLower.'.'.Str::kebab($aliasPath);
 
             Livewire::component($alias, $classNamespace);
         }
@@ -177,12 +178,13 @@ class FrontServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::componentNamespace(config('modules.namespace').'\\'.$this->name.'\\View\\Components', $this->nameLower);
     }
 
     /**
      * Get the services provided by the provider.
      */
+    #[\Override]
     public function provides(): array
     {
         return [];

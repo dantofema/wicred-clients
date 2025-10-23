@@ -1,27 +1,17 @@
 <div class="min-h-[220px] flex items-center justify-center p-6">
     <div
         class="w-full max-w-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-lg p-6">
-        <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center">
             <div>
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Consultar DNI</h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Ingresa el DNI para verificar identidad en el
-                    registro.</p>
-            </div>
-            <div class="hidden sm:flex items-center text-sm text-gray-500 dark:text-gray-400">
-                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-2" xmlns="http://www.w3.org/2000/svg"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                          d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                          d="M19.4 21a8.6 8.6 0 10-14.8 0"/>
-                </svg>
-                <span>Verificación instantánea</span>
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Pedí tu préstamo, simple!</h2>
             </div>
         </div>
 
         <div class="mt-6 grid grid-cols-1 gap-4">
             <div>
-                <label for="dni" class="block text-sm font-medium text-gray-700 dark:text-gray-200">DNI</label>
+                <label for="dni" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                    Ingresa tu número de DNI
+                </label>
 
                 <div class="mt-2 relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

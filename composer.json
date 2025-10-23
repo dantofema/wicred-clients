@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.7",
         "laravel/boost": "^1.4",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
@@ -27,7 +28,7 @@
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^4.1",
         "pestphp/pest-plugin-laravel": "^4.0",
-        "rector/rector": "^1.0"
+        "rector/rector": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -73,6 +74,39 @@
         ],
         "sail:rector": [
             "vendor/bin/sail php -d memory_limit=2G vendor/bin/rector --ansi"
+        ],
+        "phpstan": [
+            "php -d memory_limit=2G vendor/bin/phpstan analyse --ansi"
+        ],
+        "sail:phpstan": [
+            "vendor/bin/sail php -d memory_limit=2G vendor/bin/phpstan analyse --ansi"
+        ],
+        "larastan": [
+            "php -d memory_limit=2G vendor/bin/phpstan analyse --ansi"
+        ],
+        "sail:larastan": [
+            "vendor/bin/sail php -d memory_limit=2G vendor/bin/phpstan analyse --ansi"
+        ],
+        "pint": [
+            "vendor/bin/pint --dirty"
+        ],
+        "sail:pint": [
+            "vendor/bin/sail pint --dirty"
+        ],
+        "sail:test": [
+            "vendor/bin/sail php artisan test"
+        ],
+        "sail:check": [
+            "@sail:pint",
+            "@sail:larastan",
+            "@sail:rector",
+            "@sail:test"
+        ],
+        "check": [
+            "@pint",
+            "@larastan",
+            "@rector",
+            "@test"
         ]
     },
     "extra": {

@@ -1,0 +1,33 @@
+includes:
+    - vendor/nunomaduro/larastan/extension.neon
+    - vendor/nunomaduro/larastan/rules.neon
+
+parameters:
+    paths:
+        - app
+        - Modules
+    # Choose an initial level; you can raise this gradually.
+    level: 6
+
+    tmpDir: storage/framework/cache/phpstan
+
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+
+    ignoreErrors:
+        # Example: ignore dynamic properties in tests if any
+        - '#Access to an undefined property Tests\\#'
+
+    scanFiles:
+        - bootstrap/app.php
+
+    # Larastan specific
+    larastan:
+        # Paths that contain models, add more if needed
+        paths:
+            - app
+            - Modules
+        # Enable commonly useful features
+        containerMediators: true
+        enableModelMerging: true
+        analyzeMigrations: false

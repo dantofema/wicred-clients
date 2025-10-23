@@ -23,5 +23,6 @@ class EventServiceProvider extends ServiceProvider
     /**
      * Configure the proper event listeners for email verification.
      */
+    #[\Override]
     protected function configureEmailVerification(): void {}
 }

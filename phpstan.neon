@@ -1,0 +1,20 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app/
+        - database/
+        - routes/
+        - tests/
+
+    # Level 9 is the highest level
+    level: 5
+
+    ignoreErrors:
+        - '#Call to an undefined method PHPUnit\\Framework\\TestCase::#'
+        - '#Undefined variable: \$this#'
+
+    excludePaths:
+        - ./*/*/FileToBeExcluded.php
+
