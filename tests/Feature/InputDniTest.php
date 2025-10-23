@@ -10,7 +10,7 @@ use Modules\Front\PeopleRegistry;
 uses(RefreshDatabase::class);
 
 it('finds a person by dni', function () {
-    $person = PeopleRegistry::factory()->create(['dni' => '12345678']);
+    PeopleRegistry::factory()->create(['dni' => '12345678']);
 
     Livewire::test(InputDni::class)
         ->set('dni', '12345678')
@@ -23,6 +23,7 @@ it('adds an error when person not found', function () {
     Livewire::test(InputDni::class)
         ->set('dni', '00000000')
         ->call('search')
-        ->assertHasErrors(['dni']);
+        // The component no longer uses validation errors. It now exposes an `errorMessage` property.
+        // Assert that `errorMessage` is a non-empty string.
+        ->assertSet('errorMessage', fn($m) => is_string($m) && !empty($m));
 });
-

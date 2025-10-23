@@ -27,6 +27,7 @@ class InputDni extends Component
     {
         // Reset the displayed error message when the user updates the DNI field
         $this->errorMessage = '';
+        $this->person = null;
         // Also clear any validation errors for the dni field so UI validation messages disappear
         $this->resetErrorBag('dni');
     }
