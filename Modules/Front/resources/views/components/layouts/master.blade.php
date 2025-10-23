@@ -28,7 +28,6 @@
 <body>
 <livewire:front::header/>
 {{ $slot }}
-
 {{-- Livewire scripts --}}
 @livewireScripts
 </body>
