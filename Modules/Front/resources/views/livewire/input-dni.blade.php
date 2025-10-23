@@ -15,7 +15,7 @@
 
                 <div class="mt-2 relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                   d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"/>
@@ -43,14 +43,14 @@
                             class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                             <svg wire:loading.remove wire:target="search" class="h-4 w-4"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                  stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                       d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
 
                             <svg wire:loading wire:target="search" class="animate-spin h-4 w-4"
-                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                                         stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor"

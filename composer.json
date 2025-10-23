@@ -1,5 +1,4 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
     "name": "laravel/blank-livewire-starter-kit",
     "type": "project",
     "description": "The official Laravel starter kit for Livewire.",
@@ -66,6 +65,10 @@
             "@php artisan config:clear --ansi",
             "@php artisan test"
         ],
+        "test:coverage": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test --coverage --coverage-html=storage/app/coverage"
+        ],
         "rector": [
             "php -d memory_limit=2G vendor/bin/rector --ansi"
         ],
@@ -95,6 +98,10 @@
         ],
         "sail:test": [
             "vendor/bin/sail php artisan test"
+        ],
+        "sail:test:coverage": [
+            "vendor/bin/sail php artisan config:clear --ansi",
+            "vendor/bin/sail php artisan test --coverage --coverage-html=storage/app/coverage"
         ],
         "sail:check": [
             "@sail:pint",
