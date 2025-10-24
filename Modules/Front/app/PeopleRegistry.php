@@ -18,4 +18,11 @@ class PeopleRegistry extends Model
     {
         return PeopleRegistryFactory::new();
     }
+
+    protected $fillable = [
+        'dni',
+        'cuil',
+        'name',
+        'is_deceased',
+    ];
 }

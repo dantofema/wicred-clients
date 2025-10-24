@@ -4,6 +4,7 @@ namespace Modules\Front\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Modules\Front\PeopleRegistry;
 
 class PeopleRegistryFactory extends Factory
@@ -16,9 +17,9 @@ class PeopleRegistryFactory extends Factory
 
         return [
             'dni' => $dni,
-            'name' => $this->faker->name(),
-            'last_name' => $this->faker->lastName(),
+            'name' => Str::upper($this->faker->name()),
             'cuil' => fn (array $attributes) => "20-{$attributes['dni']}-0",
+            'is_deceased' => $this->faker->boolean(20),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
