@@ -15,16 +15,20 @@ class InputDni extends Component
     public bool $acceptedPrivacyPolicy = false;
 
     /**
-     * Person data loaded from the registry (or null when not found).
-     * Stored as an array with keys like dni, name, last_name, cuil.
+     * Person data loaded from the registry (or empty array when not found).
+     * Stored as an array of PeopleRegistry instances.
+     *
+     * @var array<int, PeopleRegistry>
      */
     public array $persons = [];
 
     /**
      * Selected person when there are multiple matches.
-     * Stored as an array with keys like dni, name, last_name, cuil.
+     * Stored as a PeopleRegistry instance or null when not selected.
+     *
+     * @var PeopleRegistry|null
      */
-    public ?array $selectedPerson = null;
+    public ?PeopleRegistry $selectedPerson = null;
 
     public function render(): View
     {
@@ -74,7 +78,8 @@ class InputDni extends Component
             return;
         }
 
-        $this->persons = $found->toArray();
+        // Keep model instances (not arrays) so the Blade can access properties or we can use data_get
+        $this->persons = $found->all();
 
         // Si hay una sola persona, seleccionarla automáticamente
         if (count($this->persons) === 1) {

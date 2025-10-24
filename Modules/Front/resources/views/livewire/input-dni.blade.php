@@ -101,35 +101,23 @@
                                 continuar</p>
                         </div>
                         <div class="text-xs text-green-600 dark:text-green-400">DNI: <span
-                                class="font-medium">{{ $selectedPerson['dni'] ?? '-' }}</span></div>
+                                class="font-medium">{{ data_get($selectedPerson, 'dni', '-') }}</span></div>
                     </div>
 
                     <dl class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-green-700 dark:text-green-300">
                         <div class="sm:col-span-1">
                             <dt class="text-xs text-green-600 dark:text-green-400">Nombre</dt>
-                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ $selectedPerson['name'] ?? '-' }}</dd>
+                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ data_get($selectedPerson, 'name', '-') }}</dd>
                         </div>
 
                         <div class="sm:col-span-1">
                             <dt class="text-xs text-green-600 dark:text-green-400">Apellido</dt>
-                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ $selectedPerson['last_name'] ?? '-' }}</dd>
+                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ data_get($selectedPerson, 'last_name', '-') }}</dd>
                         </div>
 
                         <div class="sm:col-span-1">
                             <dt class="text-xs text-green-600 dark:text-green-400">CUIL</dt>
-                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ $selectedPerson['cuil'] ?? '-' }}</dd>
-                        </div>
-                        <div class="mt-4 flex items-center gap-3">
-                            <button
-                                wire:click="$set('selectedPerson', null)"
-                                class="px-3 py-1.5 rounded-md border border-green-200 dark:border-green-700 text-sm text-green-700 dark:text-green-200 bg-white dark:bg-gray-900 hover:bg-green-50 dark:hover:bg-green-900/50"
-                                type="button">
-                                Cambiar persona
-                            </button>
-                            <button class="px-3 py-1.5 rounded-md bg-green-600 text-white text-sm hover:bg-green-700"
-                                    type="button">
-                                Continuar con esta persona
-                            </button>
+                            <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ data_get($selectedPerson, 'cuil', '-') }}</dd>
                         </div>
 
                     </dl>
@@ -150,15 +138,15 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
                                         <div>
                                             <dt class="text-xs text-gray-500 dark:text-gray-400">Nombre</dt>
-                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ $person['name'] ?? '-' }}</dd>
+                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ data_get($person, 'name', '-') }}</dd>
                                         </div>
                                         <div>
                                             <dt class="text-xs text-gray-500 dark:text-gray-400">Apellido</dt>
-                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ $person['last_name'] ?? '-' }}</dd>
+                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ data_get($person, 'last_name', '-') }}</dd>
                                         </div>
                                         <div>
                                             <dt class="text-xs text-gray-500 dark:text-gray-400">CUIL</dt>
-                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ $person['cuil'] ?? '-' }}</dd>
+                                            <dd class="mt-1 font-medium text-gray-900 dark:text-gray-100">{{ data_get($person, 'cuil', '-') }}</dd>
                                         </div>
                                     </div>
                                 </div>

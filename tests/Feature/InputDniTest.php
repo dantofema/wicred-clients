@@ -18,7 +18,10 @@ it('finds a person by dni', function () {
         ->call('search')
         ->assertHasNoErrors()
         ->assertSet('persons', fn($persons) => is_array($persons) && count($persons) === 1)
-        ->assertSet('selectedPerson', fn($person) => is_array($person) && ($person['dni'] ?? null) === '12345678');
+        ->assertSet('selectedPerson', fn($person) => (
+        is_array($person) ? (($person['dni'] ?? null) === '12345678') : (
+            is_object($person) && ($person->dni ?? null) === '12345678'
+        )));
 });
 
 it('adds an error when person not found', function () {
@@ -75,10 +78,12 @@ it('normalizes dni by removing non-digit characters', function () {
 });
 
 it('clears error message and persons when dni is updated', function () {
+    $existingPerson = PeopleRegistry::factory()->make(['dni' => '99999999']);
+
     $component = Livewire::test(InputDni::class)
         ->set('errorMessage', 'Some error')
-        ->set('persons', [['dni' => '99999999']])
-        ->set('selectedPerson', ['dni' => '99999999'])
+        ->set('persons', [$existingPerson])
+        ->set('selectedPerson', $existingPerson)
         ->set('dni', '12345678');
 
     $component->assertSet('errorMessage', '')
@@ -98,11 +103,15 @@ it('allows selecting a specific person from multiple results', function () {
 
     // Seleccionar la segunda persona (índice 1)
     $component->call('selectPerson', 1)
-        ->assertSet('selectedPerson', fn($person) => is_array($person) &&
-            $person['dni'] === '12345678' &&
-            isset($person['name']) &&
-            isset($person['last_name'])
-        );
+        ->assertSet('selectedPerson', fn($person) => (
+        is_array($person) ? (
+            isset($person['dni']) && $person['dni'] === '12345678' && isset($person['name']) && isset($person['last_name'])
+        ) : (
+        is_object($person) ? (
+            isset($person->dni) && $person->dni === '12345678' && isset($person->name) && isset($person->last_name)
+        ) : false
+        )
+        ));
 });
 
 it('handles invalid person selection gracefully', function () {
@@ -128,10 +137,14 @@ it('automatically selects person when only one is found', function () {
         ->set('acceptedPrivacyPolicy', true)
         ->call('search')
         ->assertSet('persons', fn($persons) => count($persons) === 1)
-        ->assertSet('selectedPerson', fn($selected) => is_array($selected) &&
-            $selected['dni'] === '12345678' &&
-            $selected['name'] === 'Juan' &&
-            $selected['last_name'] === 'Pérez'
-        );
+        ->assertSet('selectedPerson', fn($selected) => (
+        is_array($selected) ? (
+            ($selected['dni'] === '12345678') && ($selected['name'] === 'Juan') && ($selected['last_name'] === 'Pérez')
+        ) : (
+        is_object($selected) ? (
+            ($selected->dni === '12345678') && ($selected->name === 'Juan') && ($selected->last_name === 'Pérez')
+        ) : false
+        )
+        ));
 });
 
