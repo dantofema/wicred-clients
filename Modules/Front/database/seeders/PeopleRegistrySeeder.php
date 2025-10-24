@@ -10,9 +10,11 @@ class PeopleRegistrySeeder extends Seeder
     public function run(): void
     {
 
-        PeopleRegistry::factory()->create([
-            'dni' => '12345678',
-        ]);
+        PeopleRegistry::factory()
+            ->count(2)
+            ->create([
+                'dni' => '12345678',
+            ]);
 
         PeopleRegistry::factory()->create([
             'dni' => '23456789',

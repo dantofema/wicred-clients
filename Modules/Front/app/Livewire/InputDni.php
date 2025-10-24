@@ -2,6 +2,7 @@
 
 namespace Modules\Front\Livewire;
 
+use Illuminate\View\View;
 use Livewire\Component;
 use Modules\Front\PeopleRegistry;
 
@@ -11,13 +12,21 @@ class InputDni extends Component
 
     public string $errorMessage = '';
 
+    public bool $acceptedPrivacyPolicy = false;
+
     /**
      * Person data loaded from the registry (or null when not found).
      * Stored as an array with keys like dni, name, last_name, cuil.
      */
-    public ?array $person = null;
+    public array $persons = [];
 
-    public function render()
+    /**
+     * Selected person when there are multiple matches.
+     * Stored as an array with keys like dni, name, last_name, cuil.
+     */
+    public ?array $selectedPerson = null;
+
+    public function render(): View
     {
         return view('front::livewire.input-dni');
     }
@@ -26,9 +35,8 @@ class InputDni extends Component
     {
         // Reset the displayed error message when the user updates the DNI field
         $this->errorMessage = '';
-        $this->person = null;
-        // Also clear any validation errors for the dni field so UI validation messages disappear
-        $this->resetErrorBag('dni');
+        $this->persons = [];
+        $this->selectedPerson = null;
     }
 
     /**
@@ -36,10 +44,16 @@ class InputDni extends Component
      */
     public function search(): void
     {
+        if (!$this->acceptedPrivacyPolicy) {
+            $this->errorMessage = 'Debes aceptar la política de protección de datos personales y términos y condiciones del servicio para continuar.';
+            $this->persons = [];
+
+            return;
+        }
 
         if ($this->dni === '') {
             $this->errorMessage = 'Por favor ingrese un DNI.';
-            $this->person = null;
+            $this->persons = [];
 
             return;
         }
@@ -50,20 +64,34 @@ class InputDni extends Component
         $normalizedDni = preg_replace('/\D+/', '', $this->dni) ?? '';
         $this->dni = $normalizedDni;
 
-        $found = PeopleRegistry::where('dni', $this->dni)->first();
+        $found = PeopleRegistry::where('dni', $this->dni)->get();
 
-        if ($found === null) {
-            $this->person = null;
+        if ($found->isEmpty()) {
+            $this->persons = [];
+            $this->selectedPerson = null;
             $this->errorMessage = 'No se encontró registro con ese DNI.';
 
             return;
         }
 
-        $this->person = $found->only(['dni', 'name', 'last_name', 'cuil']);
+        $this->persons = $found->toArray();
+
+        // Si hay una sola persona, seleccionarla automáticamente
+        if (count($this->persons) === 1) {
+            $this->selectedPerson = $this->persons[0];
+        } else {
+            // Si hay múltiples personas, limpiar la selección para que el usuario elija
+            $this->selectedPerson = null;
+        }
     }
 
-    public function increment(): void
+    /**
+     * Select a specific person from the list of found persons.
+     */
+    public function selectPerson(int $index): void
     {
-        $this->count++;
+        if (isset($this->persons[$index])) {
+            $this->selectedPerson = $this->persons[$index];
+        }
     }
 }
