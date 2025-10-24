@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "${workspaceFolder}/artisan",
+        "boost:mcp"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "APP_ENV": "local"
+      }
+    }
+  }
+}
+
