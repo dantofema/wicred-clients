@@ -30,7 +30,8 @@
                         maxlength="20"
                         inputmode="numeric"
                         autocomplete="off"
-                        class="block w-full pl-10 pr-28 sm:pr-36 rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
+                        @disabled($selectedPerson !== null)
+                        class="block w-full pl-10 pr-28 sm:pr-36 rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-gray-700"
                         placeholder="Ej. 2012345678"
                     />
 
@@ -50,37 +51,42 @@
                     </label>
                 </div>
 
-                <div class="mt-4">
-                    <button
-                        type="button"
-                        wire:click="search"
-                        wire:target="search"
-                        wire:loading.attr="disabled"
-                        @disabled(!$acceptedPrivacyPolicy)
-                        class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                        <svg wire:loading.remove wire:target="search" class="h-4 w-4"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                             stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                  d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
+                @if(!$selectedPerson)
+                    <div class="mt-4">
+                        <button
+                            type="button"
+                            wire:click="search"
+                            wire:target="search"
+                            wire:loading.attr="disabled"
+                            :disabled="!$wire.acceptedPrivacyPolicy"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                            <svg wire:loading.remove wire:target="search" class="h-4 w-4"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                 stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                      d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
 
-                        <svg wire:loading wire:target="search" class="animate-spin h-4 w-4"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor"
-                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                        </svg>
+                            <svg wire:loading wire:target="search" class="animate-spin h-4 w-4"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                            </svg>
 
-                        <span class="text-sm font-medium">Continuar</span>
-                    </button>
-                </div>
-
-                @if($errorMessage)
-                    <p class="mt-2 text-sm text-red-700">{{ $errorMessage }}</p>
+                            <span class="text-sm font-medium">Continuar</span>
+                        </button>
+                    </div>
                 @endif
+
+                @if ($errorMessage)
+                    <p class="mt-2 text-sm text-red-700">
+                        {{ $errorMessage }}
+                    </p>
+                @endif
+
             </div>
 
             @if ($selectedPerson)
@@ -113,8 +119,21 @@
                             <dt class="text-xs text-green-600 dark:text-green-400">CUIL</dt>
                             <dd class="mt-1 font-medium text-green-900 dark:text-green-100">{{ $selectedPerson['cuil'] ?? '-' }}</dd>
                         </div>
+                        <div class="mt-4 flex items-center gap-3">
+                            <button
+                                wire:click="$set('selectedPerson', null)"
+                                class="px-3 py-1.5 rounded-md border border-green-200 dark:border-green-700 text-sm text-green-700 dark:text-green-200 bg-white dark:bg-gray-900 hover:bg-green-50 dark:hover:bg-green-900/50"
+                                type="button">
+                                Cambiar persona
+                            </button>
+                            <button class="px-3 py-1.5 rounded-md bg-green-600 text-white text-sm hover:bg-green-700"
+                                    type="button">
+                                Continuar con esta persona
+                            </button>
+                        </div>
+
                     </dl>
-                    
+
                 </div>
             @elseif ($persons && count($persons) > 1)
                 {{-- Mostrar lista de personas para seleccionar --}}
