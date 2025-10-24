@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('people_registries', function (Blueprint $table) {
             $table->id();
             $table->string('dni');
-            $table->string('name');
-            $table->string('last_name');
             $table->string('cuil');
+            $table->string('name');
+            $table->boolean('is_deceased')->default(false);
             $table->timestamps();
         });
     }

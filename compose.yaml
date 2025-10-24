@@ -41,6 +41,7 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
       - 'sail-mariadb:/var/lib/mysql'
+      - './docker/mariadb/init:/docker-entrypoint-initdb.d'
     networks:
       - sail
     healthcheck:
