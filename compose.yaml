@@ -26,6 +26,7 @@ services:
       - mariadb
       - redis
       - mailpit
+    command: /var/www/html/scripts/wait-for-services.sh
   mariadb:
     image: 'mariadb:10.5.15'
     ports:
