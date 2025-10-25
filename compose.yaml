@@ -23,10 +23,12 @@ services:
     networks:
       - sail
     depends_on:
-      - mariadb
-      - redis
-      - mailpit
-    command: /var/www/html/scripts/wait-for-services.sh
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
   mariadb:
     image: 'mariadb:10.5.15'
     ports:
