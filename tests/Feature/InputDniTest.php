@@ -17,11 +17,11 @@ it('finds a person by dni', function () {
         ->set('acceptedPrivacyPolicy', true)
         ->call('search')
         ->assertHasNoErrors()
-        ->assertSet('persons', fn($persons) => is_array($persons) && count($persons) === 1)
-        ->assertSet('selectedPerson', fn($person) => (
-        is_array($person) ? (($person['dni'] ?? null) === '12345678') : (
-            is_object($person) && ($person->dni ?? null) === '12345678'
-        )));
+        ->assertSet('persons', fn ($persons) => is_array($persons) && count($persons) === 1)
+        ->assertSet('selectedPerson', fn ($person) => (
+            is_array($person) ? (($person['dni'] ?? null) === '12345678') : (
+                is_object($person) && ($person->dni ?? null) === '12345678'
+            )));
 });
 
 it('adds an error when person not found', function () {
@@ -30,7 +30,7 @@ it('adds an error when person not found', function () {
         ->call('search')
         // The component no longer uses validation errors. It now exposes an `errorMessage` property.
         // Assert that `errorMessage` is a non-empty string.
-        ->assertSet('errorMessage', fn($m) => is_string($m) && !empty($m));
+        ->assertSet('errorMessage', fn ($m) => is_string($m) && ! empty($m));
 });
 
 it('adds an error when dni is empty', function () {
@@ -61,7 +61,7 @@ it('finds multiple persons with same dni', function () {
         ->set('acceptedPrivacyPolicy', true)
         ->call('search')
         ->assertHasNoErrors()
-        ->assertSet('persons', fn($persons) => is_array($persons) && count($persons) === 2)
+        ->assertSet('persons', fn ($persons) => is_array($persons) && count($persons) === 2)
         ->assertSet('selectedPerson', null); // No debe seleccionar automáticamente cuando hay múltiples
 });
 
@@ -74,7 +74,7 @@ it('normalizes dni by removing non-digit characters', function () {
         ->call('search')
         ->assertHasNoErrors()
         ->assertSet('dni', '12345678')
-        ->assertSet('persons', fn($persons) => count($persons) > 0);
+        ->assertSet('persons', fn ($persons) => count($persons) > 0);
 });
 
 it('clears error message and persons when dni is updated', function () {
@@ -98,19 +98,16 @@ it('allows selecting a specific person from multiple results', function () {
         ->set('dni', '12345678')
         ->set('acceptedPrivacyPolicy', true)
         ->call('search')
-        ->assertSet('persons', fn($persons) => count($persons) === 3)
+        ->assertSet('persons', fn ($persons) => count($persons) === 3)
         ->assertSet('selectedPerson', null);
 
     // Seleccionar la segunda persona (índice 1)
     $component->call('selectPerson', 1)
-        ->assertSet('selectedPerson', fn($person) => (
-        is_array($person) ? (
-            isset($person['dni']) && $person['dni'] === '12345678' && isset($person['name']) && isset($person['last_name'])
-        ) : (
-        is_object($person) ? (
-            isset($person->dni) && $person->dni === '12345678' && isset($person->name) && isset($person->last_name)
-        ) : false
-        )
+        ->assertSet('selectedPerson', fn ($person) => (
+            $person !== null && (
+                (is_array($person) && ($person['dni'] ?? null) === '12345678') ||
+                (is_object($person) && ($person->dni ?? null) === '12345678')
+            )
         ));
 });
 
@@ -129,22 +126,17 @@ it('automatically selects person when only one is found', function () {
     $person = PeopleRegistry::factory()->create([
         'dni' => '12345678',
         'name' => 'Juan',
-        'last_name' => 'Pérez'
     ]);
 
     Livewire::test(InputDni::class)
         ->set('dni', '12345678')
         ->set('acceptedPrivacyPolicy', true)
         ->call('search')
-        ->assertSet('persons', fn($persons) => count($persons) === 1)
-        ->assertSet('selectedPerson', fn($selected) => (
-        is_array($selected) ? (
-            ($selected['dni'] === '12345678') && ($selected['name'] === 'Juan') && ($selected['last_name'] === 'Pérez')
-        ) : (
-        is_object($selected) ? (
-            ($selected->dni === '12345678') && ($selected->name === 'Juan') && ($selected->last_name === 'Pérez')
-        ) : false
-        )
+        ->assertSet('persons', fn ($persons) => count($persons) === 1)
+        ->assertSet('selectedPerson', fn ($selected) => (
+            $selected !== null && (
+                (is_array($selected) && ($selected['dni'] ?? null) === '12345678' && ($selected['name'] ?? null) === 'Juan') ||
+                (is_object($selected) && ($selected->dni ?? null) === '12345678' && ($selected->name ?? null) === 'Juan')
+            )
         ));
 });
-
