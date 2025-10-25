@@ -1,7 +1,7 @@
 ```json
 {
     "servers": {
-        "laravel-boost-wicred-web": {
+        "laravel-boost-wicred-clients": {
             "command": "docker",
             "args": [
                 "exec",
