@@ -1,0 +1,86 @@
+@startuml
+
+skinparam dpi 100
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+skinparam class {
+  BackgroundColor<<ModuleB>> #E3F2FD
+  BackgroundColor<<ModuleA>> #E8F5E9
+  BorderColor #0B5FFF
+}
+
+left to right direction
+
+title Interfaz pública + binding - Diagrama de clases
+
+package "Módulo B" as MB <<ModuleB>> {
+  interface "App\Contracts\ModuleB\PublicApiContract" as PublicApiContract {
+    +getList(array): Collection
+    +getById(int): ?ModelB
+    +createFromModuleA(array): ModelB
+  }
+
+  class "App\Services\ModuleB\ModuleBPublicApi" as ModuleBPublicApi {
+    -serviceB1: ServiceB1
+    +__construct(ServiceB1)
+    +getList(array): Collection
+    +getById(int): ?ModelB
+    +createFromModuleA(array): ModelB
+  }
+
+  class "App\Services\ModuleB\ServiceB1" as ServiceB1 {
+    -model: ModelB
+    +getList(array): Collection
+    +getById(int): ?ModelB
+    +createFromModuleA(array): ModelB
+  }
+
+  class "App\Services\ModuleB\ServiceB2" as ServiceB2 {
+    -model: ModelB
+    +someAdminTask(): void
+  }
+
+  class "App\Http\Controllers\ModuleB\ControllerB1" as ControllerB1 {
+    -service: ServiceB1
+  }
+
+  class "App\Http\Controllers\ModuleB\ControllerB2" as ControllerB2 {
+    -service: ServiceB2
+  }
+
+  class "App\Providers\ModuleBServiceProvider" as ServiceProviderModuleB {
+    +register(): void
+  }
+
+  class "App\Models\ModelB" as ModelB
+}
+
+package "Módulo A" as MA <<ModuleA>> {
+  class "App\Http\Controllers\ControllerA1" as ControllerA1 {
+    -moduleB: PublicApiContract
+    +__construct(PublicApiContract)
+    +store(): Response
+  }
+
+  class "App\Services\ServiceA1" as ServiceA1
+
+  class "App\Models\ModelA" as ModelA
+}
+
+PublicApiContract <|.. ModuleBPublicApi
+ModuleBPublicApi --> ServiceB1 : uses
+ControllerA1 --> PublicApiContract : depends on
+ControllerB1 --> ServiceB1 : uses
+ControllerB2 --> ServiceB2 : uses
+ServiceB1 --> ModelB : uses
+ServiceB2 --> ModelB : uses
+ServiceProviderModuleB ..> ModuleBPublicApi : binds to
+ServiceProviderModuleB ..> PublicApiContract : registers
+
+ControllerA1 --> ServiceA1 : uses
+ServiceA1 --> ModelA : uses
+ModelA --> ModelB : association
+
+@enduml

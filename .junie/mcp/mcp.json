@@ -1,11 +1,16 @@
 {
     "mcpServers": {
-        "laravel-boost": {
-            "command": "/usr/bin/php8.4",
-            "args": [
-                "/var/www/html/artisan",
-                "boost:mcp"
-            ]
-        }
+      "laravel-boost-wicred-clients": {
+        "command": "docker",
+        "args": [
+          "exec",
+          "-i",
+          "wicred-clients-laravel.test-1",
+          "php",
+          "/var/www/html/artisan",
+          "boost:mcp"
+        ]
+      }
     }
+}
 }

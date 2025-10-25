@@ -1,0 +1,27 @@
+@startuml
+
+title Comunicación mínima entre módulos
+
+package "Módulo A" {
+  component "ControllerA" as ControllerA
+  entity "ModelA\n(Eloquent)" as ModelA
+}
+
+package "Módulo B" {
+  component "ControllerB1" as ControllerB1
+  component "ControllerB2" as ControllerB2
+  component "ServiceB1" as ServiceB1
+  component "ServiceB2" as ServiceB2
+  entity "ModelB\n(Eloquent)" as ModelB
+}
+
+ControllerA --> ModelA : usa
+ControllerA --> ServiceB1 : llama a
+
+ControllerB1 --> "ServiceB1" : usa
+ServiceB1 --> ModelB  : usa
+ModelA --> ModelB : belongsTo / hasOne
+
+ControllerB2 --> "ServiceB2" : usa
+ServiceB2 --> ModelB  : usa
+@enduml
