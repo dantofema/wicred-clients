@@ -5,8 +5,6 @@
 
 The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to enhance the user's satisfaction building Laravel applications.
 
-> **MCP Server Configured**: This project has Laravel Boost MCP Server configured for enhanced AI assistance. See [MCP-SERVER.md](MCP-SERVER.md) for setup instructions.
-
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 

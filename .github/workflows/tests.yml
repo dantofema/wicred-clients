@@ -15,6 +15,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: Testing
 
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: wicred_clients_testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,6 +35,10 @@ jobs:
           php-version: 8.4
           tools: composer:v2
           coverage: xdebug
+          extensions: pdo, pdo_mysql
+
+      - name: Install MySQL Client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -46,6 +60,25 @@ jobs:
 
       - name: Generate Application Key
         run: php artisan key:generate
+
+      - name: Configure Database
+        run: |
+          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_USERNAME=root" >> .env
+          echo "DB_PASSWORD=password" >> .env
+          echo "DB_DATABASE=wicred_clients_testing" >> .env
+          echo "DB_DATOS_HOST=127.0.0.1" >> .env
+          echo "DB_DATOS_USERNAME=root" >> .env
+          echo "DB_DATOS_PASSWORD=password" >> .env
+          echo "DB_DATOS_DATABASE=bd_datos_testing" >> .env
+
+      - name: Create Test Databases
+        run: |
+          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS wicred_clients_testing;"
+          mysql -h 127.0.0.1 -u root -ppassword -e "CREATE DATABASE IF NOT EXISTS bd_datos_testing;"
+
+      - name: Run Migrations
+        run: php artisan migrate --force
 
       - name: Build Assets
         run: npm run build

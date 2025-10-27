@@ -10,6 +10,13 @@
           "/var/www/html/artisan",
           "boost:mcp"
         ]
+      },
+      "laravel-boost": {
+          "command": "/usr/bin/php8.4",
+          "args": [
+              "/var/www/html/artisan",
+              "boost:mcp"
+          ]
       }
     }
 }
