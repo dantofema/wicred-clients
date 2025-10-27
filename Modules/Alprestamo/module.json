@@ -1,0 +1,11 @@
+{
+    "name": "Alprestamo",
+    "alias": "alprestamo",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Alprestamo\\Providers\\AlprestamoServiceProvider"
+    ],
+    "files": []
+}
