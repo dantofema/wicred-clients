@@ -2,11 +2,12 @@
 
 ## Check
 
-### 1, Si tiene un prestamo
+### 1. Si tiene un prestamo
 
-- Si el prestamo esta activo no se puede solicitar un nuevo prestamo
-- Si el prestamo esta saldado puede continuar (como RENOVADOR)
+- Si el prestamo está activo no se puede solicitar un nuevo prestamo
+- Si el prestamo está saldado puede continuar (como RENOVADOR)
 - Si no tiene ningun prestamo puede continuar
+  ⌊
 
 ### 2. Si es cliente de Telecentro
 
