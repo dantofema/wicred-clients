@@ -68,8 +68,14 @@ class AlprestamoServiceProvider extends ServiceProvider
      */
     protected function registerConfig(): void
     {
-        $this->publishes([module_path($this->name, 'config/config.php') => config_path($this->nameLower.'.php')], 'config');
-        $this->mergeConfigFrom(module_path($this->name, 'config/config.php'), $this->nameLower);
+        $this->publishes([
+            module_path($this->name, 'config/alprestamo.php') => config_path($this->nameLower.'.php'),
+        ], 'config');
+
+        $this->mergeConfigFrom(
+            module_path($this->name, 'config/alprestamo.php'),
+            $this->nameLower
+        );
     }
 
     /**

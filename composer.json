@@ -32,6 +32,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\Alprestamo\\": "Modules/Alprestamo/app/",
+            "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
