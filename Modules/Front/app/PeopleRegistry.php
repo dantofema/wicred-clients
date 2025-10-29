@@ -19,6 +19,13 @@ class PeopleRegistry extends Model
         'is_deceased',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_deceased' => 'boolean',
+        ];
+    }
+
     /**
      * Resolve the model factory for the model.
      */

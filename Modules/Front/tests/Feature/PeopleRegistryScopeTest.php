@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Front\PeopleRegistry;
+use Tests\TestCase;
 
-uses(RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
 it('scopeNotDeceased devuelve solo personas no fallecidas', function () {
     PeopleRegistry::factory()->create(['is_deceased' => false, 'dni' => '123', 'cuil' => '20-123', 'name' => 'Vivo']);
