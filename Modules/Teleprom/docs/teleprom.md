@@ -1,0 +1,507 @@
+# API Reference Teleprom
+
+Documentacion API de servicios de Teleprom.
+
+**Public**  
+**ENVIRONMENT:** Doc's Production Environment  
+**LAYOUT:** Single Column  
+**LANGUAGE:** cURL - cURL  
+**AUTHORIZATION:** Bearer Token
+
+---
+
+## API Integración de WhatsApp
+
+En la siguiente documentación encontrarán los métodos necesarios para realizar la autentificación con nuestra plataforma y luego realizar los envios a través de una integración via API en diversos lenguajes.
+
+### Antes de empezar
+
+Es necesario contar con una cuenta activa y un usuario con su constraseña. La misma será otorgada por su asesor comercial.
+
+### Cómo empezar
+
+Para realizar cualquier request debe enviar en el HEADER HTTP una clave de la forma: `Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` donde el token es obtenido a través del endpoint de Autentificación.
+
+Puede visualizar ejemplos haciendo click en "Run in Postman" en la esquina superior derecha y luego abriendo la documentación con Postman.
+
+Para realizar un envío deberá seguir los siguientes pasos:
+
+1. Realizar la autentificación y guardar el token de la misma (Revisar endpoint 1).
+2. Con el token obtenido del paso 1, obtener las cuentas (de WhatsApp) y las plantillas asociadas a su cuenta (revisar endpoints 3 y 4).
+3. Una vez que tenga los identificadores de plantilla y cuentas, podrá realizar la Integración (revisar endpoint 2).
+4. Luego de realizar la Integración recibirá callbacks (notificaciones de envío) con los estados de cada uno de sus envíos realizados.
+
+**Nota:** Si usted ya conoce la información obtenida en el paso 2, no es necesario que los vuelva obtener ya que los identificadores de las cuentas y las plantillas son únicos y permanentes.
+
+---
+
+## API Reference WhatsApp
+
+### POST 1. Autentificación
+
+**URL:** `https://mayten.cloud/Auth`
+
+#### Descripción
+
+Este método será utilizado para realizar la autentificación de su cuenta con nuestro sistema.
+
+Usted contará con un usuario `username` y una contraseña `password` para hacer el login. Como respuesta, obtendrá un JSON con el formato que se muestra en el ejemplo:
+
+**Nota:** A los fines prácticos el token ha sido recortado.
+
+```json
+{
+  "token": "****",
+  "expires": "2022-05-06T14:35:25.1723881-03:00",
+  "passwordState": "Ok"
+}
+```
+
+El token obtenido deberá utilizarlo en cada petición enviándolo como HEADER HTTP de la forma: `Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9......`
+
+Tener en cuenta que la validez del token es de 24 hs desde que se loguea. Si se vuelve a solicitar dentro de la ventana de 24 hs, el token y el expires devueltos serán los mismos.
+
+**Ejemplo:** Si realiza el login a las 15:05 hs y una segunda vez a las 20:30 hs obtendrá en ambos casos el mismo token y expires.
+
+Una vez transcurridas las 24 hs, el token se vence y debe solicitar uno nuevo mediante un login.
+
+Si el token está vencido y lo utiliza para realizar alguna integración, obtendrá como respuesta `401 Unauthorized`.
+
+El campo `passwordState` indica si la contraseña está vencida (Expired), pronta a vencer (ExpiresSoon), o es válida (Ok).
+
+#### AUTHORIZATION
+Bearer Token
+
+#### HEADERS
+- Content-Type: `application/json`
+
+#### Body
+```json
+{
+  "username": "",
+  "password": "•••••••"
+}
+```
+
+#### Example Request (Success)
+
+```bash
+curl --location 'https://mayten.cloud/Auth' \
+--header 'Content-Type: application/json' \
+--data '{
+    "username": "someuser",
+    "password": "somepassword"
+}'
+```
+
+#### Example Response (200 OK)
+```json
+{
+  "token": "***",
+  "expires": "2022-05-06T14:35:25.1723881-03:00",
+  "passwordState": "Ok"
+}
+```
+
+---
+
+### POST 2. Integración HSM
+
+---
+
+### GET 3. Plantillas
+
+**URL:** `https://mayten.cloud/GetTemplates`
+
+#### Descripción
+
+Este método será utilizado para obtener el listado de las plantillas creadas.
+
+#### AUTHORIZATION
+- Bearer Token: `yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+#### HEADERS
+- Content-Type: `application/json`
+
+#### Example Request (Success)
+
+```bash
+curl --location 'https://mayten.cloud/GetTemplates' \
+--header 'Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' \
+--header 'Content-Type: application/json'
+```
+
+#### Example Response (200 OK)
+
+```json
+{
+  "hsms": [
+    {
+      "id": 24,
+      "name": "shipping_confirmation",
+      "structure": "Your package has been shipped. It will be delivered in {{1}} business days.\nThis message is from an unverified business.                                                                                   | Your package has been shipped. It will be delivered in 99 business days.\nThis message is from an unverified business.",
+      "example": "Your package has been shipped. It will be delivered in 99 business days.\\nThis message is from an unverified business.",
+      "status": "Accepted",
+      "type": "TEXT",
+      "idioma": "es",
+      "fechaCreacion": "2022-05-13T16:43:11",
+      "category": "SHIPPING_UPDATE",
+      "parameters": 1,
+      "idRuteo": 39
+    }
+  ]
+}
+```
+
+---
+
+### GET 4. Cuentas
+
+**URL:** `https://mayten.cloud/GetAllRuteos`
+
+#### Descripción
+
+Este método será utilizado para obtener el listado de las cuentas de WhatsApp creadas.
+
+#### AUTHORIZATION
+- Bearer Token: `yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+#### HEADERS
+- Content-Type: `application/json`
+
+#### Example Request (Success)
+
+```bash
+curl --location 'https://mayten.cloud/GetAllRuteos' \
+--header 'Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' \
+--header 'Content-Type: application/json'
+```
+
+#### Example Response (200 OK)
+
+```json
+{
+  "ruteadors": [
+    {
+      "id": 39,
+      "srcName": "MaytenCloud",
+      "source": "5493513582830"
+    }
+  ]
+}
+```
+
+---
+
+### POST 5. Integración Free Form Messages
+
+---
+
+## Webhooks WhatsApp V0
+
+Los webhooks o callbacks son notificaciones de los estados de los envíos realizados a través de la Integración.
+
+Para poder recibir los webhooks necesita definir y notificar a su asesor comercial la o las URL's a donde quiere recibir las notificaciones.
+
+Existen 2 tipos de notificaciones, de estado y de mensajes entrantes.
+
+### Notificaciones de estado
+
+Los mensajes enviados a través de WhatsApp tienen 5 estados posibles.
+
+El envío puede tener 1 de 2 estados iniciales:
+
+- **failed:** indica que el envío falló por la causa detallada en el campo resultado.
+- **enqueued:** indica que el envío fue encolado para ser procesado.
+
+Si el estado del envío es `enqueued` recibirá las siguientes actualizaciones:
+
+- **sent:** cuando el mensaje haya sido enviado.
+- **delivered:** cuando el destinatario haya recibido el mensaje.
+- **read:** cuando el destinatario haya leido el mensaje.
+
+**Nota:** El estado `read` no se notificará si el destinatario tiene desactivada la confirmación de lectura.
+
+El estado `failed` puede también llegar después de un `enqueued`, es decir que `enqueued` no garantiza que el número haya sido correcto y que se entregará a destino.
+
+**Referencia:** En la aplicación de WhatsApp
+
+### Notificaciones de mensajes entrantes
+
+Cuando ingrese un mensaje entrante, recibirá un callback donde el campo `resultado` del JSON será `received`.
+
+### Estructura de la respuesta
+
+Las notificaciones serán enviadas en bulk (en lote) y siguiendo el siguiente formato.
+
+```json
+[
+  {
+      "fechaHora":"{fechahora}",
+      "identificador":"{identificador}",
+      "telefono":"{teléfono}",
+      "resultado":"{resultado}",
+      "empresa":"{empresa}",
+      "origen":"{origen}",
+      "mensaje":"{mensaje}",
+      "senttime":"{milisegundos de envio}"
+  },
+  {
+      "fechaHora":"{fechahora}",
+      "identificador":"{identificador}",
+      "telefono":"{teléfono}",
+      "resultado":"{resultado}",
+      "empresa":"{empresa}",
+      "origen":"{origen}",
+      "mensaje":"{mensaje}",
+      "senttime":"{milisegundos de envio}"
+  }
+]
+```
+
+**Campos:**
+
+- **fechaHora:** Es el momento en el cual se produce la notificación.
+- **identificador:** Este es el identificador que fue utilizado en la Integración.
+- **telefono:** Es el número de teléfono ingresado en la Integración.
+- **resultado:** Indica el estado (enqueued, sent, delivered, read, received, failed).
+- **empresa:** Indica la cuenta por la cual salió el envío.
+- **origen:** Este campo será "WSP"
+- **mensaje:** Este campo solo tendrá un valor en caso de un una notificación de tipo entrante (received).
+- **senttime:** Indica el tiempo en milisegundos que pasó entre que se realiza la Integración y llega la notificación de estado.
+
+El envío del callback se realizará hasta que el cliente devuelva un código `200 OK` o al cabo de 48 horas de reintentos. En este último caso dicho estado será eliminado en forma permanente.
+
+### VIEW: Outgoing Status Events
+
+Se muestran los diferentes ejemplos de los webhooks que recibirá del estado de los envios.
+
+#### Body (raw json)
+
+```json
+{
+    "fechaHora": "2022-05-24T13:30:02.568-03:00",
+    "identificador": "42",
+    "telefono": "5493515238015",
+    "resultado": "enqueued",
+    "empresa": "MaytenCloud", 
+    "origen": "WSP", 
+    "sentTime": "1370.0765"
+}
+```
+
+#### Example Request: Enqueued Event
+
+```bash
+curl --location --request VIEW '' \
+--header 'Content-Type: application/json' \
+--data '{
+    "fechaHora": "2022-05-24T13:30:02.568-03:00",
+    "identificador": "42",
+    "telefono": "5493515238015",
+    "resultado": "enqueued",
+    "empresa": "MaytenCloud", 
+    "origen": "WSP", 
+    "sentTime": "1370.0765"
+}'
+```
+
+#### Example Response
+No response body - This request doesn't return any response body
+
+---
+
+## Webhooks WhatsApp V1
+
+### VIEW: Outgoing Status Events
+
+Se muestran los diferentes ejemplos de los webhooks que recibirá del estado de los envios.
+
+#### Example Request: Enqueued Event
+
+```bash
+curl --location --request VIEW '' \
+--header 'Content-Type: application/json' \
+--data '{
+    "Uuid": "c29915c8-d20c-4455-b322-2f3da9d55646",
+    "Id": "23506",
+    "Version": "1",
+    "Type": "STATUS",
+    "Payload": {
+        "gs_app_id": "APP_ID",
+        "object": "whatsapp_business_account",
+        "entry": [
+            {
+                "changes": [
+                    {
+                        "value": {
+                            "messaging_product": "whatsapp",
+                            "statuses": [
+                                {
+                                    "id": "WHATSAPP_MESSAGE_ID",
+                                    "gs_id": "MESSAGE_ID",
+                                    "status": "enqueued",
+                                    "timestamp": "TIMESTAMP",
+                                    "recipient_id": "CUSTOMER_PHONE_NUMBER"
+                                }
+                            ]
+                        },
+                        "field": "messages"
+                    }
+                ]
+            }
+        ]
+    }
+}'
+```
+
+#### Example Response
+No response body - This request doesn't return any response body
+
+---
+
+## Webhooks WhatsApp V3
+
+### VIEW: Incoming Messages Events
+
+Se muestra un ejemplo del webhook que recibirá en caso de un entrante.
+
+#### Example Request: Incoming Event
+
+```bash
+curl --location --request VIEW '' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data '{
+    "Uuid": "9013547f-ebfd-4be0-a666-25ed136170a9",
+    "Id": "",
+    "Version": "3",
+    "Type": "INCOMING",
+    "Payload": {
+        "entry": [
+            {
+                "changes": [
+                    {
+                        "field": "messages",
+                        "value": {
+                            "contacts": [
+                                {
+                                    "profile": {
+                                        "name": "nombre apellido"
+                                    },
+                                    "wa_id": "5493515318047"
+                                }
+                            ],
+                            "messages": [
+                                {
+                                    "button": {
+                                        "payload": "Quiero más info",
+                                        "text": "Quiero más info"
+                                    },
+                                    "context": {
+                                        "from": "5491171186962",
+                                        "gs_id": "7bb2e914-271c-474f-998e-d72e267ca289",
+                                        "id": "fb90048f-df5c-4753-b62c-012ef7133c93"
+                                    },
+                                    "from": "5493515318047",
+                                    "id": "wamid.HBgNNTQ5MzUxNTMxODA0NxUCABIYIDc1Mjg3OUE1OThEREE4MDFENTVBMUVDQTFEOEJFQzU5AA==",
+                                    "timestamp": "1725372609",
+                                    "type": "button"
+                                }
+                            ],
+                            "messaging_product": "whatsapp",
+                            "metadata": {
+                                "display_phone_number": "5491171186962",
+                                "phone_number_id": "252106964657695"
+                            }
+                        }
+                    }
+                ],
+                "id": "275578198964163"
+            }
+        ],
+        "gs_app_id": "795a3985-5730-41d5-9dbf-f49ea4f8c1e3",
+        "object": "whatsapp_business_account"
+    }
+}'
+```
+
+#### Example Response
+No response body - This request doesn't return any response body
+
+---
+
+## URL Shortener
+
+### VIEW: Integration with shortener
+
+---
+
+## API NumberLookup
+
+---
+
+## API Sim Swap
+
+Para comenzar a utilizar el servicio deberá primero autenticarse con el método Auth que devolverá un token, y con este utilizar el método GetChange para obtener información sobre cambios de emparejamiento de SIM relacionados con número celular.
+
+### POST Auth
+
+**URL:** `https://mayten.cloud/Auth`
+
+#### Descripción
+
+Este método será utilizado para realizar la autentificación de su cuenta con nuestro sistema.
+
+Usted contará con un usuario `username` y una contraseña `password` para hacer el login. Como respuesta, obtendrá un JSON con el formato que se muestra en el ejemplo:
+
+**Nota:** A los fines prácticos el token ha sido recortado.
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires": "2022-05-06T14:35:25.1723881-03:00"
+}
+```
+
+El token obtenido deberá utilizarlo en cada petición enviándolo como HEADER HTTP de la forma: `Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+Tener en cuenta que la validez del token es de 24 hs desde que se loguea. Si se vuelve a solicitar dentro de la ventana de 24 hs, el token y el expires devueltos serán los mismos.
+
+**Ejemplo:** Si realiza el login a las 15:05 hs y una segunda vez a las 20:30 hs obtendrá en ambos casos el mismo token y expires.
+
+Una vez transcurridas las 24 hs, el token se vence y debe solicitar uno nuevo mediante un login.
+
+Si el token está vencido y lo utiliza para realizar alguna integración, obtendrá como respuesta `401 Unauthorized`.
+
+#### HEADERS
+- Content-Type: `application/json`
+
+#### Body
+```json
+{
+  "username": "",
+  "password": "•••••••"
+}
+```
+
+#### Example Request (Success)
+
+```bash
+curl --location 'https://mayten.cloud/Auth' \
+--header 'Content-Type: application/json' \
+--data '{
+    "username": "someuser",
+    "password": "somepassword"
+}'
+```
+
+#### Example Response (200 OK)
+
+```json
+{
+  "token": "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires": "2022-05-06T14:35:25.1723881-03:00"
+}
+```
+
+
