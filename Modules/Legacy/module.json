@@ -1,0 +1,11 @@
+{
+    "name": "Legacy",
+    "alias": "legacy",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        
+    ],
+    "files": []
+}
