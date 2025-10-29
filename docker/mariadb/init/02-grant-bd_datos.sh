@@ -19,9 +19,12 @@ done
 
 # Ejecutar GRANT usando el usuario root con contraseña
 mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" <<SQL
-GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON wicred_clients.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON bd_datos.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON wicred_clients_testing.* TO '${MYSQL_USER}'@'%';
+GRANT ALL PRIVILEGES ON bd_datos_testing.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 SQL
 
-echo "Grants applied for ${MYSQL_USER} on ${MYSQL_DATABASE}"
+echo "Grants applied for ${MYSQL_USER} on all databases (wicred_clients, bd_datos, wicred_clients_testing, bd_datos_testing)"
 
