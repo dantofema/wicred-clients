@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         cacheDirectory="storage/framework/cache/phpunit"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -11,13 +12,29 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Modules">
+            <directory>Modules/Alprestamo/tests</directory>
+            <directory>Modules/Front/tests</directory>
+            <directory>Modules/Legacy/tests</directory>
+            <directory>Modules/Teleprom/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
-            <directory>Modules</directory>
+            <directory>Modules/Alprestamo/app</directory>
+            <directory>Modules/Front/app</directory>
+            <directory>Modules/Legacy/app</directory>
+            <directory>Modules/Teleprom/app</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <html outputDirectory="storage/framework/testing/coverage/html"/>
+            <text outputFile="storage/framework/testing/coverage/coverage.txt"/>
+            <clover outputFile="storage/framework/testing/coverage/clover.xml"/>
+        </report>
+    </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
@@ -33,3 +50,4 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>
+

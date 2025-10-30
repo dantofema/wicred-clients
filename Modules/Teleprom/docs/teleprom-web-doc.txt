@@ -1,0 +1,242 @@
+POST
+2. Integración HSM
+https://mayten.cloud/api/Integration/MessageWpp
+Descripción
+Este método se utiliza para realizar la integración y realizar el envío de mensajes a través de WhatsApp.
+
+El JSON de integración debe tener los siguientes campos:
+
+hsmId: Este identificador es un número asociado a su HSM y a la cuenta.
+sourceId: Este identificador es propio de la cuenta de WhatsApp de la cual se realizarán los envios.
+Nota: Cada HSM está asociado a la cuenta en la que se creó la plantilla.
+
+destinations: Es una lista de los destinos a los cuales se enviará el HSM especificado por el hsmId.
+Cada destinations contiene un documento embebido con los campos:
+
+trackingNumber opcional: Este es un identificador para realizar un seguimiento del envío.
+
+dstNumber: Este es el número de teléfono del contacto al cual se le enviará el HSM. Se debe utilizar el formato E.123.
+
+hsmParams: Es una lista de los parámetros del HSM ordenados.
+
+internalParamsopcional: Es una lista de parámetros no visibles en conversaciones. Puede utilizarse para definir identificadores y datos personalizados, visibles en sabanas.
+
+chatParamsopcional: Es una lista de parámetros visibles en conversaciones. Pueden usarse en las interacciones con bots o agentes.
+
+Advertencia:
+Si la lista hsmParams tiene más parámetros de los indicados en el HSM solo serán tenidos en cuenta los primeros hasta completar el número de paramétros aprobados, el resto se enviará vacío.
+Supongamos que se tiene un HSM con 4 parámetros, se reemplazaran hasta el cuarto parámetro inclusive.
+Si se colocan menos de 4 parámetros, por ejemplo 2 se reemplazará hasta el segundo parámetro.
+Si la lista de hsmParams contiene algún parámetro con salto de línea este será borrado antes de enviar el mensaje ya que WhatsApp no acepta estos caracteres en los parámetros y devolverá en el status "OK, with line break".
+
+La respuesta de la integración será un JSON con el siguiente formato:
+
+View More
+JSON
+{
+  "responses": [
+    {
+      "trackingNumber": "645564456",
+      "messageId": "a8bc2294-5164-459d-9035-42366aa3d5a9",
+      "status": "OK"
+    },
+    {
+      "trackingNumber": "564548",
+      "messageId": "d1fac407-1a23-453e-b65f-fb8cf0d748d6",
+      "status": "OK"
+    }
+  ],
+  "trackUuid": "4f195c43-80a4-4b51-8d00-4e4204076440"
+}
+Cuyos campos son:
+
+responses: Es una lista de respuestas que incluye los siguientes campos:
+trackingNumber: Es el mismo trackingNumber del JSON de integración.
+messageId: Es un identificador de cada destino para uso interno.
+status: Es el estado de la integración del destino.
+trackUuid: Es un identificador de la integración que podrá ser utilizado para trackear los envios de la integración.
+AUTHORIZATION
+Bearer Token
+Token
+yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+HEADERS
+Content-Type
+application/json
+
+Body
+raw (json)
+View More
+json
+{
+  "messages": [
+    {
+      "sourceId": "<integer>",
+      "hsmId": "<integer>",
+      "destinations": [
+        {
+          "trackingNumber": "<string>",
+          "dstNumber": "<string>",
+          "hsmParams": [
+            "<string>",
+            "<string>"
+          ],
+          "internalParams": [
+            "<string>",
+            "<string>"
+          ],
+          "chatParams": [
+            "<string>",
+            "<string>"
+          ]
+        },
+        {
+          "trackingNumber": "<string>",
+          "dstNumber": "<string>",
+          "hsmParams": [
+            "<string>",
+            "<string>"
+          ],
+          "internalParams": [
+            "<string>",
+            "<string>"
+          ],
+          "chatParams": [
+            "<string>",
+            "<string>"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": "<integer>",
+      "hsmId": "<integer>",
+      "destinations": [
+        {
+          "trackingNumber": "<string>",
+          "dstNumber": "<string>",
+          "hsmParams": [
+            "<string>",
+            "<string>"
+          ],
+          "internalParams": [
+            "<string>",
+            "<string>"
+          ],
+          "chatParams": [
+            "<string>",
+            "<string>"
+          ]
+        },
+        {
+          "trackingNumber": "<string>",
+          "dstNumber": "<string>",
+          "hsmParams": [
+            "<string>",
+            "<string>"
+          ],
+          "internalParams": [
+            "<string>",
+            "<string>"
+          ],
+          "chatParams": [
+            "<string>",
+            "<string>"
+          ]
+        }
+      ]
+    }
+  ]
+}
+Example Request
+Success Bulk Multiple Accounts
+View More
+curl
+curl --location 'https://mayten.cloud/api/Integration/MessageWpp' \
+--header 'Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...' \
+--header 'Content-Type: application/json' \
+--data '{
+  "messages": [
+    {
+      "sourceId": 5,
+      "hsmId": 10,
+      "destinations": [
+        {
+          "trackingNumber": "645564456",
+          "dstNumber": "5493516723999",
+          "hsmParams": [
+            "13"
+          ],
+          "internalParams": [
+            "111111111"
+          ],
+          "chatParams": [
+            "client"
+          ]
+        },
+        {
+          "trackingNumber": "564548",
+          "dstNumber": "5493516724000",
+          "hsmParams": [
+            "14"
+          ],
+          "internalParams": [
+            "111111111"
+          ],
+          "chatParams": [
+            "client"
+          ]
+        }
+      ]
+    },
+    {
+      "sourceId": 6,
+      "hsmId": 11,
+      "destinations": [
+        {
+          "trackingNumber": "645564457",
+          "dstNumber": "5493516724001",
+          "hsmParams": [
+            "15"
+          ],
+          "internalParams": [
+            "111111111"
+          ],
+          "chatParams": [
+            "client"
+          ]
+        },
+        {
+          "trackingNumber": "564549",
+          "dstNumber": "5493516724002",
+          "hsmParams": [
+            "16"
+          ],
+          "internalParams": [
+            "111111111"
+          ],
+          "chatParams": [
+            "client"
+          ]
+        }
+      ]
+    }
+  ]
+}'
+200 OK
+Example Response
+Body
+Headers (2)
+View More
+json
+{
+  "responses": [
+    {
+      "trackingNumber": "645564456",
+      "messageId": "a8bc2294-5164-459d-9035-42366aa3d5a9",
+      "status": "OK"
+    },
+    {
+      "trackingNumber": "564548",
+      "messageId": "d1fac407-1a23-453e-b65f-fb8cf0d748d6",
+      "status": "OK"

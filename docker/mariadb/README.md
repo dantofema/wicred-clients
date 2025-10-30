@@ -1,18 +1,22 @@
 # Configuración de Múltiples Bases de Datos
 
-Este proyecto utiliza dos bases de datos MariaDB:
+Este proyecto utiliza cuatro bases de datos MariaDB:
 
 1. **wicred_clients** - Base de datos principal de la aplicación
 2. **bd_datos** - Base de datos adicional
+3. **wicred_clients_testing** - Base de datos de testing para wicred_clients
+4. **bd_datos_testing** - Base de datos de testing para bd_datos
 
 ## Configuración
 
-Ambas bases de datos se ejecutan en el mismo contenedor MariaDB y se crean automáticamente al iniciar los contenedores.
+Todas las bases de datos se ejecutan en el mismo contenedor MariaDB y se crean automáticamente al iniciar los contenedores.
 
 ### Conexiones disponibles
 
 - `mariadb` - Conexión por defecto (wicred_clients)
 - `bd_datos` - Conexión a la base de datos bd_datos
+- `mariadb_testing` - Conexión para testing (wicred_clients_testing)
+- `bd_datos_testing` - Conexión para testing de bd_datos
 
 ### Uso en el código
 

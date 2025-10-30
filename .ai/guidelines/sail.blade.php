@@ -1,4 +1,4 @@
-{{--
+
 Laravel Boost — Directrices AI (Sail)
 
 Propósito:
@@ -38,4 +38,4 @@ Buenas prácticas y notas para la IA:
 - Evita incluir secretos o instrucciones que modifiquen archivos de configuración sensibles sin pedir confirmación.
 
 Fin de las directrices.
---}}
+

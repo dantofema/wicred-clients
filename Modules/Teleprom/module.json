@@ -1,0 +1,11 @@
+{
+    "name": "Teleprom",
+    "alias": "teleprom",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Teleprom\\Providers\\TelepromServiceProvider"
+    ],
+    "files": []
+}
