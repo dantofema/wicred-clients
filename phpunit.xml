@@ -28,6 +28,13 @@
             <directory>Modules/Teleprom/app</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <html outputDirectory="storage/framework/testing/coverage/html"/>
+            <text outputFile="storage/framework/testing/coverage/coverage.txt"/>
+            <clover outputFile="storage/framework/testing/coverage/clover.xml"/>
+        </report>
+    </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
