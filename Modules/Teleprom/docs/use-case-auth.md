@@ -173,9 +173,7 @@ class TelepromTemplateClient
 Puede probarlo con una ruta sencilla dentro del módulo, por ejemplo en `Modules/Teleprom/routes/web.php`:
 
 ```php
-use Illuminate\Support\Facades\Route;
-use Modules\Teleprom\Support\TelepromAuthClient;
-use Modules\Teleprom\Support\TelepromTemplateClient;
+use Illuminate\Support\Facades\Route;use Modules\Teleprom\app\Support\TelepromTemplateClient;use Modules\Teleprom\Support\TelepromAuthClient;
 
 Route::get('/teleprom/templates-demo', function () {
     // Instanciar el cliente de autenticación con valores del config

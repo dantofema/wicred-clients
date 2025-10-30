@@ -2,10 +2,12 @@
 
 namespace Modules\Teleprom\Support;
 
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class TelepromTemplateClient
+readonly class TelepromTemplateClient
 {
     public function __construct(
         private TelepromAuthClient $authClient,
@@ -16,6 +18,9 @@ class TelepromTemplateClient
      * Obtiene el listado de plantillas disponibles.
      *
      * @return array{hsms?: array<mixed>, ...}
+     *
+     * @throws RequestException
+     * @throws ConnectionException
      */
     public function getTemplates(): array
     {
@@ -27,7 +32,7 @@ class TelepromTemplateClient
             ->acceptJson()
             ->get($this->baseUrl.'/GetTemplates');
 
-        // Si el token expiró, limpiamos cache y reintentamos una vez.
+        // Si el token expiró, limpiamos caché y reintentamos una vez.
         if ($response->status() === 401) {
             Log::warning('Teleprom: Token expirado (401), limpiando cache y reintentando', [
                 'url' => $this->baseUrl.'/GetTemplates',
