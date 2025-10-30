@@ -17,7 +17,7 @@ readonly class TelepromTemplateClient
     /**
      * Obtiene el listado de plantillas disponibles.
      *
-     * @return array{hsms?: array<mixed>, ...}
+     * @return array{hsms?: array, ...}
      *
      * @throws RequestException
      * @throws ConnectionException
